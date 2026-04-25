@@ -1,41 +1,40 @@
-## =========================
-## STAGE 1 - BUILD
-## =========================
-FROM quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21 AS build
+# Estágio 1: Builder - Compila a aplicação
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
 
-WORKDIR /code
+WORKDIR /build
 
-# arquivos do Maven wrapper
-COPY --chown=quarkus:quarkus mvnw /code/mvnw
-COPY --chown=quarkus:quarkus .mvn /code/.mvn
-COPY --chown=quarkus:quarkus pom.xml /code/
+# Copia arquivos de configuração do Maven
+COPY pom.xml .
+COPY .mvn .mvn
+COPY mvnw .
 
-USER quarkus
+# Baixa dependências (cache layer)
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
 
-# baixa dependências
-RUN ./mvnw -B dependency:go-offline
+# Copia o código fonte
+COPY src src
 
-# código fonte
-COPY --chown=quarkus:quarkus src /code/src
+# Compila a aplicação
+RUN ./mvnw package -DskipTests -B
 
-# build JVM (NÃO native)
-RUN ./mvnw package -DskipTests
+# Estágio 2: Runtime - Imagem final
+FROM registry.access.redhat.com/ubi9/openjdk-21-runtime:1.24
 
-## =========================
-## STAGE 2 - RUNTIME
-## =========================
-FROM quay.io/quarkus/ubi9-quarkus-micro-image:2.0
+ENV LANGUAGE='en_US:en'
 
-WORKDIR /work/
+WORKDIR /deployments
 
-# copia artefato Quarkus JVM
-COPY --from=build /code/target/quarkus-app /work/
-
-# permissões (importante para Render)
-RUN chmod -R 775 /work && \
-    chown -R 1001:root /work
+# Copia os artefatos do estágio builder
+COPY --from=builder /build/target/quarkus-app/lib/ ./lib/
+COPY --from=builder /build/target/quarkus-app/*.jar ./
+COPY --from=builder /build/target/quarkus-app/app/ ./app/
+COPY --from=builder /build/target/quarkus-app/quarkus/ ./quarkus/
 
 EXPOSE 8080
 
-USER 1001
-CMD ["sh", "-c", "java -Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=$PORT -jar /work/quarkus-app/quarkus-run.jar"]
+USER 185
+
+ENV JAVA_OPTS_APPEND="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
+
+ENTRYPOINT [ "/opt/jboss/container/java/run/run-java.sh" ]

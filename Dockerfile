@@ -7,15 +7,13 @@ WORKDIR /build
 COPY pom.xml .
 COPY .mvn .mvn
 COPY mvnw .
-
-# Baixa dependências (cache layer)
-RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
-
-# Copia o código fonte
 COPY src src
 
+# Baixa dependências (cache layer)
+RUN mvn dependency:go-offline -B --no-transfer-progress
+
 # Compila a aplicação
-RUN ./mvnw package -DskipTests -B
+RUN mvn package -DskipTests -B --no-transfer-progress
 
 # Estágio 2: Runtime - Imagem final
 FROM registry.access.redhat.com/ubi9/openjdk-21-runtime:1.24

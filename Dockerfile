@@ -1,26 +1,39 @@
-## Stage 1 : build with maven builder image with native capabilities
+## Stage 1: build
 FROM quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21 AS build
-COPY --chown=quarkus:quarkus --chmod=0755 mvnw /code/mvnw
+
+WORKDIR /code
+
+COPY --chown=quarkus:quarkus mvnw /code/mvnw
 COPY --chown=quarkus:quarkus .mvn /code/.mvn
 COPY --chown=quarkus:quarkus pom.xml /code/
+
 USER quarkus
-WORKDIR /code
+
+# baixa dependências
 RUN ./mvnw -B org.apache.maven.plugins:maven-dependency-plugin:3.8.1:go-offline
+
+# copia código fonte
 COPY --chown=quarkus:quarkus src /code/src
+
+# build JVM (NÃO native)
 RUN ./mvnw package -DskipTests
 
-## Stage 2 : create the docker final image
-FROM quay.io/quarkus/ubi9-quarkus-micro-image:2.0
-WORKDIR /work/
-COPY --from=build /code/target/*-runner /work/application
 
-# set up permissions for user `1001`
-RUN chmod 775 /work /work/application \
-  && chown -R 1001 /work \
-  && chmod -R "g+rwX" /work \
-  && chown -R 1001:root /work
+## Stage 2: runtime
+FROM quay.io/quarkus/ubi9-quarkus-micro-image:2.0
+
+WORKDIR /work/
+
+# copia artefato correto do Quarkus JVM
+COPY --from=build /code/target/quarkus-app /work/
+
+# permissões
+RUN chmod -R 775 /work && \
+    chown -R 1001:root /work
 
 EXPOSE 8080
+
 USER 1001
 
-CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]
+# JVM run
+CMD ["java", "-jar", "/work/quarkus-run.jar"]

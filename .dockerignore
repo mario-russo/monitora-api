@@ -1,4 +1,4 @@
-*
+# * retira para Multi-Stage Dockerfile for JVM Image
 !target/*-runner
 !target/*-runner.jar
 !target/lib/*

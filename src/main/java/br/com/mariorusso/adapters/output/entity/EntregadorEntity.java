@@ -1,4 +1,4 @@
-package br.com.mariorusso.infra.entity;
+package br.com.mariorusso.adapters.output.entity;
 
 import br.com.mariorusso.domain.model.Empresa;
 import br.com.mariorusso.domain.model.Entregador;
@@ -7,8 +7,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
-import java.util.Objects;
 
 @Entity
 public class EntregadorEntity extends PanacheEntity {

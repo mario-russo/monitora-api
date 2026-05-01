@@ -1,7 +1,7 @@
-package br.com.mariorusso.infra.entity.repository;
+package br.com.mariorusso.adapters.output.repository;
 
-import br.com.mariorusso.domain.repository.RepositoryCore;
-import br.com.mariorusso.infra.entity.EntregaEntity;
+import br.com.mariorusso.domain.output.repository.RepositoryCore;
+import br.com.mariorusso.adapters.output.entity.EntregaEntity;
 import io.smallrye.mutiny.Uni;
 
 import java.util.List;

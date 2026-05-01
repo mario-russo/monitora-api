@@ -1,4 +1,4 @@
-package br.com.mariorusso.domain.repository;
+package br.com.mariorusso.domain.output.repository;
 
 import io.smallrye.mutiny.Uni;
 

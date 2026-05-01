@@ -1,8 +1,9 @@
-package br.com.mariorusso.infra.entity.repository;
+package br.com.mariorusso.adapters.output.repository;
 
 import br.com.mariorusso.domain.model.Empresa;
-import br.com.mariorusso.domain.repository.RepositoryCore;
-import br.com.mariorusso.infra.entity.EmpresaEntity;
+import br.com.mariorusso.domain.output.repository.RepositoryCore;
+import br.com.mariorusso.adapters.output.entity.EmpresaEntity;
+import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class EmpresaRepositoryImpl implements RepositoryCore<Empresa> {
 
     @Override
+    @WithTransaction
     public Uni<Empresa> save(Empresa empresa) {
         EmpresaEntity entity = EmpresaEntity.fromDomain(empresa);
 

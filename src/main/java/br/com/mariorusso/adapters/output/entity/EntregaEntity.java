@@ -1,4 +1,4 @@
-package br.com.mariorusso.infra.entity;
+package br.com.mariorusso.adapters.output.entity;
 
 import br.com.mariorusso.domain.model.*;
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;

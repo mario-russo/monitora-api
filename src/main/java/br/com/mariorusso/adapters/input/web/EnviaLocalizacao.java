@@ -1,4 +1,4 @@
-package br.com.mariorusso.controller;
+package br.com.mariorusso.adapters.input.web;
 
 import br.com.mariorusso.domain.model.Localizacao;
 import com.fasterxml.jackson.databind.ObjectMapper;

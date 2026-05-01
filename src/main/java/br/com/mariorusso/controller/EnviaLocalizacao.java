@@ -1,6 +1,6 @@
 package br.com.mariorusso.controller;
 
-import br.com.mariorusso.domain.Localizacao;
+import br.com.mariorusso.domain.model.Localizacao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
@@ -49,7 +49,7 @@ public class EnviaLocalizacao {
             System.out.println("📥 Localização recebida: " + message);
 
             // pega quem quer esse entregador
-            Set<Session> interessados = subscribers.get(loc.entregadorId);
+            Set<Session> interessados = subscribers.get(loc.longitude);
 
             if (interessados != null) {
                 String json = mapper.writeValueAsString(loc);

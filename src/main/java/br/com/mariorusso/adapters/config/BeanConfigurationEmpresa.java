@@ -7,7 +7,7 @@ import br.com.mariorusso.domain.output.repository.RepositoryCore;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
-public class BeanConfiguration {
+public class BeanConfigurationEmpresa {
 
     @Produces
     @ApplicationScoped

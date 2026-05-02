@@ -97,7 +97,6 @@ public class Empresa {
                 ", cnpj='" + cnpj + '\'' +
                 ", email='" + email + '\'' +
                 ", telefone='" + telefone + '\'' +
-                ", senha='" + senha + '\'' +
                 ", criadoEm=" + criadoEm +
                 '}';
     }

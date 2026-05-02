@@ -35,7 +35,7 @@ public class EntregadorEntity extends PanacheEntity {
 
     public static EntregadorEntity fromEntregador(Entregador entregador) {
         return new EntregadorEntity()
-                .setEmpresa(entregador.getEmpresa() != null ? entregador.getEmpresa():null)
+                .setEmpresa( EmpresaEntity.fromDomain(entregador.getEmpresa()) != null ? EmpresaEntity.fromDomain(entregador.getEmpresa()) :null)
                 .setNomeCompleto(entregador.getNomeCompleto())
                 .setCpf(entregador.getCpf())
                 .setTelefone(entregador.getTelefone())

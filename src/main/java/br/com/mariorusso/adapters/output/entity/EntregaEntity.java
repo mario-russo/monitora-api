@@ -1,30 +1,27 @@
 package br.com.mariorusso.adapters.output.entity;
 
-import br.com.mariorusso.domain.model.*;
+import br.com.mariorusso.domain.model.Endereco;
+import br.com.mariorusso.domain.model.Entrega;
+import br.com.mariorusso.domain.model.Localizacao;
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDateTime;
 
 @Entity
 public class EntregaEntity extends PanacheEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "empresa_id")
-    public EmpresaEntity empresa;
-
-    @ManyToOne
-    @JoinColumn(name = "entregador_id")
-    public EntregadorEntity entregador;
+    // IDs simples ao invés de relacionamentos JPA
+    public Long empresaId;
+    public Long entregadorId;
 
     public String clienteNome;
     public String clienteTelefone;
 
     @Embedded
     public Endereco endereco;
+
     @Embedded
     public Localizacao localizacaoAtual;
 
@@ -39,70 +36,58 @@ public class EntregaEntity extends PanacheEntity {
     public EntregaEntity() {
     }
 
-    public  static EntregaEntity fromEntrega(Entrega entrega){
+    public static EntregaEntity fromEntrega(Entrega entrega) {
         return new EntregaEntity()
-                .setEmpresa(entrega.empresa() != null ? entrega.empresa(): null)
-                .setEntregador(entrega.entregador()!= null ? entrega.entregador() : null)
-                .setClienteNome(entrega.clienteNome())
-                .setClienteTelefone(entrega.clienteTelefone())
-                .setEndereco(entrega.endereco())
-                .setLocalizacaoAtual(entrega.localizacaoAtual())
-                .setNumeroCupom(entrega.numeroCupom())
-                .setStatus(entrega.status())
-                .setCriadoEm(entrega.criadoEm())
-                .setAceitoEm(entrega.aceitoEm())
-                .setIniciadoEm(entrega.iniciadoEm())
-                .setEntregueEm(entrega.entregueEm());
-
+                .setEmpresaId(entrega.getEmpresa())
+                .setEntregadorId(entrega.getEntregador())
+                .setClienteNome(entrega.getClienteNome())
+                .setClienteTelefone(entrega.getClienteTelefone())
+                .setEndereco(entrega.getEndereco())
+                .setLocalizacaoAtual(entrega.getLocalizacaoAtual())
+                .setNumeroCupom(entrega.getNumeroCupom())
+                .setStatus(entrega.getStatus())
+                .setCriadoEm(entrega.getCriadoEm())
+                .setAceitoEm(entrega.getAceitoEm())
+                .setIniciadoEm(entrega.getIniciadoEm())
+                .setEntregueEm(entrega.getEntregueEm());
     }
-    public Entrega toDomain(){
+
+    public Entrega toDomain() {
         return new Entrega()
                 .setId(id)
-                .setEmpresa(empresa.toDomain())
-                .setEntregador( entregador.toDomain())
-                .setClienteNome(clienteNome())
-                .setClienteTelefone(clienteTelefone())
-                .setEndereco(endereco())
-                .setLocalizacaoAtual(localizacaoAtual())
-                .setNumeroCupom(numeroCupom())
-                .setStatus(status())
-                .setCriadoEm(criadoEm())
-                .setAceitoEm(aceitoEm())
-                .setIniciadoEm(iniciadoEm())
-                .setEntregueEm(entregueEm());
-
+                .setEmpresa(empresaId)
+                .setEntregador(entregadorId)
+                .setClienteNome(clienteNome)
+                .setClienteTelefone(clienteTelefone)
+                .setEndereco(endereco)
+                .setLocalizacaoAtual(localizacaoAtual)
+                .setNumeroCupom(numeroCupom)
+                .setStatus(status)
+                .setCriadoEm(criadoEm)
+                .setAceitoEm(aceitoEm)
+                .setIniciadoEm(iniciadoEm)
+                .setEntregueEm(entregueEm);
     }
 
-
-
-    public EmpresaEntity empresa() {
-        return empresa;
+    public Long getEmpresaId() {
+        return empresaId;
     }
 
-    public EntregaEntity setEmpresa(EmpresaEntity empresa) {
-        this.empresa = empresa;
-        return this;
-    }
-    public EntregaEntity setEmpresa(Empresa empresa) {
-        this.empresa = EmpresaEntity.fromDomain(empresa);
+    public EntregaEntity setEmpresaId(Long empresaId) {
+        this.empresaId = empresaId;
         return this;
     }
 
-    public EntregadorEntity entregador() {
-        return entregador;
+    public Long getEntregadorId() {
+        return entregadorId;
     }
 
-    public EntregaEntity setEntregador(EntregadorEntity entregador) {
-        this.entregador = entregador;
+    public EntregaEntity setEntregadorId(Long entregadorId) {
+        this.entregadorId = entregadorId;
         return this;
     }
 
-    public EntregaEntity setEntregador(Entregador entregador) {
-        this.entregador = EntregadorEntity.fromEntregador(entregador);
-        return this;
-    }
-
-    public String clienteNome() {
+    public String getClienteNome() {
         return clienteNome;
     }
 
@@ -111,7 +96,7 @@ public class EntregaEntity extends PanacheEntity {
         return this;
     }
 
-    public String clienteTelefone() {
+    public String getClienteTelefone() {
         return clienteTelefone;
     }
 
@@ -120,7 +105,7 @@ public class EntregaEntity extends PanacheEntity {
         return this;
     }
 
-    public Endereco endereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
@@ -129,7 +114,7 @@ public class EntregaEntity extends PanacheEntity {
         return this;
     }
 
-    public Localizacao localizacaoAtual() {
+    public Localizacao getLocalizacaoAtual() {
         return localizacaoAtual;
     }
 
@@ -138,7 +123,7 @@ public class EntregaEntity extends PanacheEntity {
         return this;
     }
 
-    public String numeroCupom() {
+    public String getNumeroCupom() {
         return numeroCupom;
     }
 
@@ -147,7 +132,7 @@ public class EntregaEntity extends PanacheEntity {
         return this;
     }
 
-    public String status() {
+    public String getStatus() {
         return status;
     }
 
@@ -156,7 +141,7 @@ public class EntregaEntity extends PanacheEntity {
         return this;
     }
 
-    public LocalDateTime criadoEm() {
+    public LocalDateTime getCriadoEm() {
         return criadoEm;
     }
 
@@ -165,7 +150,7 @@ public class EntregaEntity extends PanacheEntity {
         return this;
     }
 
-    public LocalDateTime aceitoEm() {
+    public LocalDateTime getAceitoEm() {
         return aceitoEm;
     }
 
@@ -174,7 +159,7 @@ public class EntregaEntity extends PanacheEntity {
         return this;
     }
 
-    public LocalDateTime iniciadoEm() {
+    public LocalDateTime getIniciadoEm() {
         return iniciadoEm;
     }
 
@@ -183,7 +168,7 @@ public class EntregaEntity extends PanacheEntity {
         return this;
     }
 
-    public LocalDateTime entregueEm() {
+    public LocalDateTime getEntregueEm() {
         return entregueEm;
     }
 
@@ -195,9 +180,8 @@ public class EntregaEntity extends PanacheEntity {
     @Override
     public String toString() {
         return "EntregaEntity{" +
-                "empresa=" + empresa +
-                ", id=" + id +
-                ", entregador=" + entregador +
+                "empresaId=" + empresaId +
+                ", entregadorId=" + entregadorId +
                 ", clienteNome='" + clienteNome + '\'' +
                 ", clienteTelefone='" + clienteTelefone + '\'' +
                 ", endereco=" + endereco +

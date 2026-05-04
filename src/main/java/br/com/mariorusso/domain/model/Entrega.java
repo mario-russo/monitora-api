@@ -2,12 +2,13 @@ package br.com.mariorusso.domain.model;
 
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Entrega {
 
     private Long id;
-    private Empresa empresa;
-    private Entregador entregador;
+    private Long empresa;
+    private Long entregador;
 
     private String clienteNome;
     private String clienteTelefone;
@@ -27,7 +28,7 @@ public class Entrega {
     public Entrega() {
     }
 
-    public Long id() {
+    public Long getId() {
         return id;
     }
 
@@ -36,25 +37,25 @@ public class Entrega {
         return this;
     }
 
-    public Empresa empresa() {
+    public Long getEmpresa() {
         return empresa;
     }
 
-    public Entrega setEmpresa(Empresa empresa) {
+    public Entrega setEmpresa(Long empresa) {
         this.empresa = empresa;
         return this;
     }
 
-    public Entregador entregador() {
+    public Long getEntregador() {
         return entregador;
     }
 
-    public Entrega setEntregador(Entregador entregador) {
+    public Entrega setEntregador(Long entregador) {
         this.entregador = entregador;
         return this;
     }
 
-    public String clienteNome() {
+    public String getClienteNome() {
         return clienteNome;
     }
 
@@ -63,7 +64,7 @@ public class Entrega {
         return this;
     }
 
-    public String clienteTelefone() {
+    public String getClienteTelefone() {
         return clienteTelefone;
     }
 
@@ -72,7 +73,7 @@ public class Entrega {
         return this;
     }
 
-    public Endereco endereco() {
+    public Endereco getEndereco() {
         return endereco;
     }
 
@@ -81,7 +82,7 @@ public class Entrega {
         return this;
     }
 
-    public Localizacao localizacaoAtual() {
+    public Localizacao getLocalizacaoAtual() {
         return localizacaoAtual;
     }
 
@@ -90,7 +91,7 @@ public class Entrega {
         return this;
     }
 
-    public String numeroCupom() {
+    public String getNumeroCupom() {
         return numeroCupom;
     }
 
@@ -99,7 +100,7 @@ public class Entrega {
         return this;
     }
 
-    public String status() {
+    public String getStatus() {
         return status;
     }
 
@@ -108,7 +109,7 @@ public class Entrega {
         return this;
     }
 
-    public LocalDateTime criadoEm() {
+    public LocalDateTime getCriadoEm() {
         return criadoEm;
     }
 
@@ -117,7 +118,7 @@ public class Entrega {
         return this;
     }
 
-    public LocalDateTime aceitoEm() {
+    public LocalDateTime getAceitoEm() {
         return aceitoEm;
     }
 
@@ -126,7 +127,7 @@ public class Entrega {
         return this;
     }
 
-    public LocalDateTime iniciadoEm() {
+    public LocalDateTime getIniciadoEm() {
         return iniciadoEm;
     }
 
@@ -135,12 +136,43 @@ public class Entrega {
         return this;
     }
 
-    public LocalDateTime entregueEm() {
+    public LocalDateTime getEntregueEm() {
         return entregueEm;
     }
 
     public Entrega setEntregueEm(LocalDateTime entregueEm) {
         this.entregueEm = entregueEm;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Entrega entrega = (Entrega) o;
+        return Objects.equals(id, entrega.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Entrega{" +
+                "id=" + id +
+                ", empresa=" + empresa +
+                ", entregador=" + entregador +
+                ", clienteNome='" + clienteNome + '\'' +
+                ", clienteTelefone='" + clienteTelefone + '\'' +
+                ", endereco=" + endereco +
+                ", localizacaoAtual=" + localizacaoAtual +
+                ", numeroCupom='" + numeroCupom + '\'' +
+                ", status='" + status + '\'' +
+                ", criadoEm=" + criadoEm +
+                ", aceitoEm=" + aceitoEm +
+                ", iniciadoEm=" + iniciadoEm +
+                ", entregueEm=" + entregueEm +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

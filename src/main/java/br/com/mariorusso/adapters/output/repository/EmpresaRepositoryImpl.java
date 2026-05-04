@@ -32,12 +32,14 @@ public class EmpresaRepositoryImpl implements RepositoryCore<Empresa> {
     }
 
     @Override
+    @WithTransaction
     public Uni<Empresa> findById(Long id) {
         return EmpresaEntity.<EmpresaEntity>findById(id)
                 .map(entity -> entity != null ? entity.toDomain() : null);
     }
 
     @Override
+    @WithTransaction
     public Uni<Empresa> update(Empresa empresa) {
         return EmpresaEntity.<EmpresaEntity>findById(empresa.getId())
                 .onItem().ifNotNull().invoke(entity -> {
